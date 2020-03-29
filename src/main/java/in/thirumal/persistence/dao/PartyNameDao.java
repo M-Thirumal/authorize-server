@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import in.thirumal.exception.AuthorizeException;
-
 import in.thirumal.exception.ErrorFactory;
 import in.thirumal.persistence.GenericDao;
 import in.thirumal.persistence.model.PartyName;
@@ -70,7 +69,7 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 		if(partyname.getPartyId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, partyname.getPartyId());
+			ps.setLong(1, partyname.getPartyId());
 		}
 		if(partyname.getGenericCd() == null) {
 			ps.setObject(2, null);
@@ -97,11 +96,7 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 		} else { 
 			ps.setObject(6, partyname.getEndTime());
 		}
-		if(partyname.getPreferred() == null) {
-			ps.setObject(7, null);
-		} else { 
-			ps.setBoolean(7, partyname.getPreferred());
-		}
+		ps.setBoolean(7, partyname.isPreferred());
 		if(partyname.getRowCreationTime() == null) {
 			ps.setObject(8, null);
 		} else { 
@@ -207,7 +202,7 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 			partyname.getRestOfName(),
 			partyname.getStartTime(),
 			partyname.getEndTime(),
-			partyname.getPreferred(),
+			partyname.isPreferred(),
 			partyname.getRowCreationTime(),
 			partyname.getRowUpdateTime(),
 			partyname.getRowUpdateInfo(),
@@ -241,7 +236,7 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 
 		partyname.setPartyNameId(rs.getObject("party_name_id") != null ? rs.getLong("party_name_id") : null);
 
-		partyname.setPartyId(rs.getObject("party_id") != null ? rs.getInt("party_id") : null);
+		partyname.setPartyId(rs.getObject("party_id") != null ? rs.getLong("party_id") : null);
 
 		partyname.setGenericCd(rs.getObject("generic_cd") != null ? rs.getInt("generic_cd") : null);
 

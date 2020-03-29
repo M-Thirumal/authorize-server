@@ -70,7 +70,7 @@ public class PartyIdentifierDao implements GenericDao <PartyIdentifier, Identifi
 		if(partyidentifier.getPartyId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, partyidentifier.getPartyId());
+			ps.setLong(1, partyidentifier.getPartyId());
 		}
 		if(partyidentifier.getGenericCd() == null) {
 			ps.setObject(2, null);
@@ -229,7 +229,7 @@ public class PartyIdentifierDao implements GenericDao <PartyIdentifier, Identifi
 
 		partyidentifier.setPartyIdentifierId(rs.getObject("party_identifier_id") != null ? rs.getLong("party_identifier_id") : null);
 
-		partyidentifier.setPartyId(rs.getObject("party_id") != null ? rs.getInt("party_id") : null);
+		partyidentifier.setPartyId(rs.getObject("party_id") != null ? rs.getLong("party_id") : null);
 
 		partyidentifier.setGenericCd(rs.getObject("generic_cd") != null ? rs.getInt("generic_cd") : null);
 

@@ -1,13 +1,12 @@
 package in.thirumal.persistence.model;
 
-import java.time.OffsetDateTime;
-import java.lang.Long;
-import java.lang.String;
-import java.util.UUID;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +31,9 @@ public class Party implements java.io.Serializable  {
 	private UUID partyUuid;
 	private OffsetDateTime birthDate;
 	private LocalDate deathDate;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

@@ -69,7 +69,7 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 		if(loginidentifier.getLoginId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, loginidentifier.getLoginId());
+			ps.setLong(1, loginidentifier.getLoginId());
 		}
 		if(loginidentifier.getGenericCd() == null) {
 			ps.setObject(2, null);
@@ -228,7 +228,7 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 
 		loginidentifier.setLoginIdentifierId(rs.getObject("login_identifier_id") != null ? rs.getLong("login_identifier_id") : null);
 
-		loginidentifier.setLoginId(rs.getObject("login_id") != null ? rs.getInt("login_id") : null);
+		loginidentifier.setLoginId(rs.getObject("login_id") != null ? rs.getLong("login_id") : null);
 
 		loginidentifier.setGenericCd(rs.getObject("generic_cd") != null ? rs.getInt("generic_cd") : null);
 

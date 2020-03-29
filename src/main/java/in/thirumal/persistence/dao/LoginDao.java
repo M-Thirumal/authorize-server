@@ -69,7 +69,7 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 		if(login.getPartyId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, login.getPartyId());
+			ps.setLong(1, login.getPartyId());
 		}
 		if(login.getRowCreationTime() == null) {
 			ps.setObject(2, null);
@@ -204,7 +204,7 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 
 		login.setLoginId(rs.getObject("login_id") != null ? rs.getLong("login_id") : null);
 
-		login.setPartyId(rs.getObject("party_id") != null ? rs.getInt("party_id") : null);
+		login.setPartyId(rs.getObject("party_id") != null ? rs.getLong("party_id") : null);
 
 		login.setRowCreationTime(rs.getObject("row_creation_time") != null ? rs.getObject("row_creation_time", OffsetDateTime.class) : null);
 

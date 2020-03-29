@@ -28,13 +28,15 @@ public class LoginQuestion implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long loginQuestionId;
-	private Integer loginId;
+	private Long loginId;
 	private Integer genericCd;
 	private String genericLocale;
 	private String answer;
 	private OffsetDateTime startTime;
 	private OffsetDateTime endTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

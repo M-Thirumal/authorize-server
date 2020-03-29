@@ -1,12 +1,10 @@
 package in.thirumal.persistence.model;
 
-import java.lang.Integer;
 import java.time.OffsetDateTime;
-import java.lang.Long;
-import java.lang.String;
+
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,8 +26,10 @@ public class Login implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long loginId;
-	private Integer partyId;
+	private Long partyId;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

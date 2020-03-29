@@ -28,12 +28,14 @@ public class PartyType implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long partyTypeId;
-	private Integer partyId;
+	private Long partyId;
 	private Integer genericCd;
 	private String genericLocale;
 	private OffsetDateTime startTime;
 	private OffsetDateTime endTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

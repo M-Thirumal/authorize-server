@@ -17,7 +17,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import in.thirumal.exception.AuthorizeException;
-
 import in.thirumal.exception.ErrorFactory;
 import in.thirumal.persistence.GenericDao;
 import in.thirumal.persistence.model.PartyPicture;
@@ -70,18 +69,14 @@ public class PartyPictureDao implements GenericDao <PartyPicture, Identifier, St
 		if(partypicture.getPartyId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, partypicture.getPartyId());
+			ps.setLong(1, partypicture.getPartyId());
 		}
 		if(partypicture.getPicture() == null) {
 			ps.setObject(2, null);
 		} else { 
 			ps.setBytes(2, partypicture.getPicture());
 		}
-		if(partypicture.getPreferred() == null) {
-			ps.setObject(3, null);
-		} else { 
-			ps.setBoolean(3, partypicture.getPreferred());
-		}
+		ps.setBoolean(3, partypicture.isPreferred());
 		if(partypicture.getRowCreationTime() == null) {
 			ps.setObject(4, null);
 		} else { 
@@ -183,7 +178,7 @@ public class PartyPictureDao implements GenericDao <PartyPicture, Identifier, St
 		jdbcTemplate.update(environment.getProperty("PartyPicture.update"), 
 			partypicture.getPartyId(),
 			partypicture.getPicture(),
-			partypicture.getPreferred(),
+			partypicture.isPreferred(),
 			partypicture.getRowCreationTime(),
 			partypicture.getRowUpdateTime(),
 			partypicture.getRowUpdateInfo(),
@@ -217,7 +212,7 @@ public class PartyPictureDao implements GenericDao <PartyPicture, Identifier, St
 
 		partypicture.setPartyPictureId(rs.getObject("party_picture_id") != null ? rs.getLong("party_picture_id") : null);
 
-		partypicture.setPartyId(rs.getObject("party_id") != null ? rs.getInt("party_id") : null);
+		partypicture.setPartyId(rs.getObject("party_id") != null ? rs.getLong("party_id") : null);
 
 		partypicture.setPicture(rs.getObject("picture") != null ? rs.getBytes("picture") : null);
 

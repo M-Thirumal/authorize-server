@@ -2,8 +2,12 @@ package in.thirumal.service.rest;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import in.thirumal.persistence.GenericDao;
+import in.thirumal.persistence.model.LoginIdentifier;
+import in.thirumal.persistence.model.Party;
 import in.thirumal.persistence.model.shared.Identifier;
 import in.thirumal.service.GenericPartyService;
 import in.thirumal.service.resource.UserResource;
@@ -15,9 +19,13 @@ import in.thirumal.service.resource.UserResource;
 @Service
 public class UserService implements GenericPartyService<UserResource, Identifier, Boolean> {
 
+	@Autowired
+	private GenericDao<Party, Identifier, String> partyDao;
+	private GenericDao<LoginIdentifier, Identifier, String> loginIdentifierDao;
+	
 	@Override
-	public UserResource create(UserResource resource, Identifier identifier, Boolean isVerified) {
-		// TODO Auto-generated method stub
+	public UserResource create(UserResource userResource, Identifier identifier, Boolean isVerified) {
+		
 		return null;
 	}
 

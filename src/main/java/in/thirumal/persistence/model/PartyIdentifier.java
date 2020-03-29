@@ -28,13 +28,15 @@ public class PartyIdentifier implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long partyIdentifierId;
-	private Integer partyId;
+	private Long partyId;
 	private Integer genericCd;
 	private String genericLocale;
 	private String identification;
 	private OffsetDateTime startTime;
 	private OffsetDateTime endTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

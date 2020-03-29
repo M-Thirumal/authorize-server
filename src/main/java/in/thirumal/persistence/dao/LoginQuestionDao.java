@@ -69,7 +69,7 @@ public class LoginQuestionDao implements GenericDao <LoginQuestion, Identifier, 
 		if(loginquestion.getLoginId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, loginquestion.getLoginId());
+			ps.setLong(1, loginquestion.getLoginId());
 		}
 		if(loginquestion.getGenericCd() == null) {
 			ps.setObject(2, null);
@@ -228,7 +228,7 @@ public class LoginQuestionDao implements GenericDao <LoginQuestion, Identifier, 
 
 		loginquestion.setLoginQuestionId(rs.getObject("login_question_id") != null ? rs.getLong("login_question_id") : null);
 
-		loginquestion.setLoginId(rs.getObject("login_id") != null ? rs.getInt("login_id") : null);
+		loginquestion.setLoginId(rs.getObject("login_id") != null ? rs.getLong("login_id") : null);
 
 		loginquestion.setGenericCd(rs.getObject("generic_cd") != null ? rs.getInt("generic_cd") : null);
 

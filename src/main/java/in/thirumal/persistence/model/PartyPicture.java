@@ -1,13 +1,10 @@
 package in.thirumal.persistence.model;
 
-import java.lang.Integer;
 import java.time.OffsetDateTime;
-import java.lang.Long;
-import java.lang.String;
-import java.lang.Boolean;
+
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,10 +26,12 @@ public class PartyPicture implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long partyPictureId;
-	private Integer partyId;
+	private Long partyId;
 	private byte[] picture;
-	private Boolean preferred;
+	private boolean preferred;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 

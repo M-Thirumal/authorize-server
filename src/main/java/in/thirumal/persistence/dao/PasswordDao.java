@@ -69,7 +69,7 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 		if(password.getLoginId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, password.getLoginId());
+			ps.setLong(1, password.getLoginId());
 		}
 		if(password.getSecret() == null) {
 			ps.setObject(2, null);
@@ -204,7 +204,7 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 
 		password.setPasswordId(rs.getObject("password_id") != null ? rs.getLong("password_id") : null);
 
-		password.setLoginId(rs.getObject("login_id") != null ? rs.getInt("login_id") : null);
+		password.setLoginId(rs.getObject("login_id") != null ? rs.getLong("login_id") : null);
 
 		password.setSecret(rs.getObject("secret") != null ? rs.getString("secret") : null);
 

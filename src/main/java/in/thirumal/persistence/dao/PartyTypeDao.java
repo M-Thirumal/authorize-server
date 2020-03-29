@@ -69,7 +69,7 @@ public class PartyTypeDao implements GenericDao <PartyType, Identifier, String> 
 		if(partytype.getPartyId() == null) {
 			ps.setObject(1, null);
 		} else { 
-			ps.setInt(1, partytype.getPartyId());
+			ps.setLong(1, partytype.getPartyId());
 		}
 		if(partytype.getGenericCd() == null) {
 			ps.setObject(2, null);
@@ -222,7 +222,7 @@ public class PartyTypeDao implements GenericDao <PartyType, Identifier, String> 
 
 		partytype.setPartyTypeId(rs.getObject("party_type_id") != null ? rs.getLong("party_type_id") : null);
 
-		partytype.setPartyId(rs.getObject("party_id") != null ? rs.getInt("party_id") : null);
+		partytype.setPartyId(rs.getObject("party_id") != null ? rs.getLong("party_id") : null);
 
 		partytype.setGenericCd(rs.getObject("generic_cd") != null ? rs.getInt("generic_cd") : null);
 

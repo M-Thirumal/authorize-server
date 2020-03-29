@@ -28,13 +28,15 @@ public class LoginIdentifier implements java.io.Serializable  {
 
 	//Declaring fields
 	private Long loginIdentifierId;
-	private Integer loginId;
+	private Long loginId;
 	private Integer genericCd;
 	private String genericLocale;
 	private String identifier;
 	private OffsetDateTime startTime;
 	private OffsetDateTime endTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowCreationTime;
+	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 
