@@ -6,10 +6,8 @@ package in.thirumal.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,11 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -42,24 +37,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Value("${jwt.secret}")
-	private String signingKey;
+//	@Value("${jwt.secret}")
+//	private String signingKey;
 	//private Integer encodingStrength = 256;
 	
-	private UserDetailsService userDetailsService;
+	//private UserDetailsService userDetailsService;
 	private CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
 
 	@Autowired
-	public SecurityConfig(UserDetailsService userDetailsService,
+	public SecurityConfig(/*UserDetailsService userDetailsService,*/
 			CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint) {
-		this.userDetailsService = userDetailsService;
+	//	this.userDetailsService = userDetailsService;
 		this.customBasicAuthenticationEntryPoint = customBasicAuthenticationEntryPoint;
 	}
 
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//	}
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
+        .withUser("thirumal").password("$2a$11$WWZlUCd4XndWGpriAx7Pv.HpZ042awTnlAKr9VDiN9xEdPNS1Xy1q").roles("ADMIN").roles("ACTUATOR");
 	}
 	
 	//@Order(1)
@@ -92,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         		//.and().requiresChannel().anyRequest().requiresSecure()
         		.and().httpBasic().authenticationEntryPoint(customBasicAuthenticationEntryPoint)
         		
-        		.and().addFilter(basicAuthenticationFilter(super.authenticationManagerBean()))
+        		.and()//.addFilter(basicAuthenticationFilter(super.authenticationManagerBean()))
         		//.formLogin().failureHandler(authenticationFailureHandler)
         		.logout().deleteCookies().invalidateHttpSession(true).logoutSuccessUrl("/user/logout").permitAll();
 		//Only one session is allowed
@@ -148,13 +149,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SessionRegistryImpl();
     }
     
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(signingKey);
-        converter.setKeyPair(new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "eticms".toCharArray()).getKeyPair("jwt"));
-        return converter;
-    }
+//    @Bean
+//    public JwtAccessTokenConverter accessTokenConverter() {
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//        converter.setSigningKey(signingKey);
+//        converter.setKeyPair(new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "eticms".toCharArray()).getKeyPair("jwt"));
+//        return converter;
+//    }
 	/*
 	 * @Bean public AuthenticationFailureHandler
 	 * customAuthenticationFailureHandler() { return new

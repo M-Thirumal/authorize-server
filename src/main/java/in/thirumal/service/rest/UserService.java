@@ -2,6 +2,8 @@ package in.thirumal.service.rest;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import in.thirumal.persistence.model.shared.Identifier;
 import in.thirumal.service.GenericPartyService;
 import in.thirumal.service.resource.UserResource;
@@ -10,6 +12,7 @@ import in.thirumal.service.resource.UserResource;
  * @author Thirumal
  *
  */
+@Service
 public class UserService implements GenericPartyService<UserResource, Identifier, Boolean> {
 
 	@Override
