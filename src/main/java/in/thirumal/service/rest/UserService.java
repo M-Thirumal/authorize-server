@@ -25,7 +25,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	
 	@Override
 	public UserResource create(UserResource userResource, Identifier identifier, Boolean isVerified) {
-		
+		//loginIdentifierDao.getV1(identifier, whereClause)
 		return null;
 	}
 
