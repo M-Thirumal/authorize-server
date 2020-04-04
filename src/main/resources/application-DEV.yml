@@ -41,9 +41,8 @@ logging:
 ---
 spring:
   datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/authorize-server
-    url: ${spring.datasource.jdbc-url}
-    username: ENC(3469nU+3M46ULoBFP3VTaWLCKWeXC0tn)
+    url: jdbc:postgresql://192.168.43.113:5432/authorizer
+    username: postgres
     password: thirumal
     
 --- 

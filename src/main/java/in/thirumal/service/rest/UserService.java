@@ -1,9 +1,11 @@
 package in.thirumal.service.rest;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import in.thirumal.persistence.GenericDao;
 import in.thirumal.persistence.model.LoginIdentifier;
@@ -23,9 +25,11 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	private GenericDao<Party, Identifier, String> partyDao;
 	private GenericDao<LoginIdentifier, Identifier, String> loginIdentifierDao;
 	
+	@Transactional
 	@Override
 	public UserResource create(UserResource userResource, Identifier identifier, Boolean isVerified) {
-		//loginIdentifierDao.getV1(identifier, whereClause)
+		Party party = partyDao.create(Party.builder().birthDate(OffsetDateTime.now()).build(), identifier);
+		System.out.println(party);
 		return null;
 	}
 

@@ -78,21 +78,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 		} else { 
 			ps.setObject(2, party.getDeathDate());
 		}
-		if(party.getRowCreationTime() == null) {
-			ps.setObject(3, null);
-		} else { 
-			ps.setObject(3, party.getRowCreationTime());
-		}
-		if(party.getRowUpdateTime() == null) {
-			ps.setObject(4, null);
-		} else { 
-			ps.setObject(4, party.getRowUpdateTime());
-		}
-		if(party.getRowUpdateInfo() == null) {
-			ps.setObject(5, null);
-		} else { 
-			ps.setString(5, party.getRowUpdateInfo());
-		}
 		return ps;
 	}
 
@@ -120,7 +105,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 	public Optional<Party> getV1(Identifier identifier) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty("Party.get"), new Object[] {
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, partyRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -137,7 +121,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 	public Optional<Party> getV1(Identifier identifier, String whereClause) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, partyRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -149,7 +132,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 	public List<Party> list(Identifier identifier) {
 		try {
 			return jdbcTemplate.query(environment.getProperty("Party.list"), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, partyRowMapper);
 		} catch (Exception e) {
@@ -161,7 +143,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 	public List<Party> list(Identifier identifier, String whereClause) {
 		try {
 			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, partyRowMapper);
 		} catch (Exception e) {
@@ -180,8 +161,6 @@ public class PartyDao implements GenericDao <Party, Identifier, String>  {
 			party.getPartyUuid(),
 			party.getBirthDate(),
 			party.getDeathDate(),
-			party.getRowCreationTime(),
-			party.getRowUpdateTime(),
 			party.getRowUpdateInfo(),
 			party.getPartyId());
 		return getV1(new Identifier(party.getPartyId(), identifier.getLocaleCd()));
