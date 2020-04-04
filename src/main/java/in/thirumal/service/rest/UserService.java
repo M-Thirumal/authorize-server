@@ -52,7 +52,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	}
 
 	private void validateUserId(UserResource userResource) {
-		if (loginIdentifierDao.getV1(Identifier.builder().text(userResource.getLoginIdentifier()).build(), 
+		if (loginIdentifierDao.getV1(Identifier.builder().localeCd(3).text(userResource.getLoginIdentifier()).build(), 
 				LoginIdentifierDao.BY_IDENTIFIER).isPresent()) {
 			throw new AuthorizeException(ErrorFactory.BAD_REQUEST, "The requested id is already claimed");
 		}

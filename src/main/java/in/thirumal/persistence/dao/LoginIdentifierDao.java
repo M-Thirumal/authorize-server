@@ -137,13 +137,14 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 	public Optional<LoginIdentifier> getV1(Identifier identifier, String whereClause) {
 		try {
 			switch(whereClause) {
-				case BY_IDENTIFIER -> {
+				case BY_IDENTIFIER -> { 
 					return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
+						identifier.getLocaleCd(),
 						identifier.getText()
 					}, loginidentifierRowMapper));
 				}
 				
-				default -> throw new AuthorizeException(ErrorFactory.NOT_IMPLEMENTED, "");
+				default -> throw new AuthorizeException(ErrorFactory.NOT_IMPLEMENTED, whereClause + " is not implemented");
 			}
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();

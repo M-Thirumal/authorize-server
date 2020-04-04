@@ -32,12 +32,12 @@ public class Identifier implements Serializable {
 	private Long pk;
 	private Long fk;
 	private String text;
-	private Long localeCd;
+	private int localeCd;
 	private UUID uuid;
 	private Identifier parentIdentifier; //locale Identifier
 	private Pageable pageable;
 	
-	public Identifier(Long pk, Long localeCd) {
+	public Identifier(Long pk, int localeCd) {
 		super();
 		this.pk = pk;
 		this.localeCd = localeCd;
