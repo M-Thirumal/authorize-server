@@ -71,21 +71,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 		} else { 
 			ps.setLong(1, login.getPartyId());
 		}
-		if(login.getRowCreationTime() == null) {
-			ps.setObject(2, null);
-		} else { 
-			ps.setObject(2, login.getRowCreationTime());
-		}
-		if(login.getRowUpdateTime() == null) {
-			ps.setObject(3, null);
-		} else { 
-			ps.setObject(3, login.getRowUpdateTime());
-		}
-		if(login.getRowUpdateInfo() == null) {
-			ps.setObject(4, null);
-		} else { 
-			ps.setString(4, login.getRowUpdateInfo());
-		}
 		return ps;
 	}
 
@@ -113,7 +98,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 	public Optional<Login> getV1(Identifier identifier) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty("Login.get"), new Object[] {
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, loginRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -130,7 +114,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 	public Optional<Login> getV1(Identifier identifier, String whereClause) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, loginRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -142,7 +125,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 	public List<Login> list(Identifier identifier) {
 		try {
 			return jdbcTemplate.query(environment.getProperty("Login.list"), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, loginRowMapper);
 		} catch (Exception e) {
@@ -154,7 +136,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 	public List<Login> list(Identifier identifier, String whereClause) {
 		try {
 			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, loginRowMapper);
 		} catch (Exception e) {
@@ -171,8 +152,6 @@ public class LoginDao implements GenericDao <Login, Identifier, String>  {
 	public Optional<Login> updateV1(Login login, Identifier identifier) {
 		jdbcTemplate.update(environment.getProperty("Login.update"), 
 			login.getPartyId(),
-			login.getRowCreationTime(),
-			login.getRowUpdateTime(),
 			login.getRowUpdateInfo(),
 			login.getLoginId());
 		return getV1(new Identifier(login.getLoginId(), identifier.getLocaleCd()));

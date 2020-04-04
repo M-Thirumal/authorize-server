@@ -36,6 +36,8 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 	private static final String GET_BY    = "LoginIdentifier.getBy";
 	private static final String LIST_BY   = "LoginIdentifier.listBy";
 	private static final String DELETE_BY = "LoginIdentifier.deleteBy";
+	//
+	public static final String BY_IDENTIFIER = "Identifier";
 
 	private final JdbcTemplate jdbcTemplate;
 	private Environment environment;
@@ -91,21 +93,6 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 		} else { 
 			ps.setObject(5, loginidentifier.getEndTime());
 		}
-		if(loginidentifier.getRowCreationTime() == null) {
-			ps.setObject(6, null);
-		} else { 
-			ps.setObject(6, loginidentifier.getRowCreationTime());
-		}
-		if(loginidentifier.getRowUpdateTime() == null) {
-			ps.setObject(7, null);
-		} else { 
-			ps.setObject(7, loginidentifier.getRowUpdateTime());
-		}
-		if(loginidentifier.getRowUpdateInfo() == null) {
-			ps.setObject(8, null);
-		} else { 
-			ps.setString(8, loginidentifier.getRowUpdateInfo());
-		}
 		return ps;
 	}
 
@@ -149,12 +136,19 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 	@Override
 	public Optional<LoginIdentifier> getV1(Identifier identifier, String whereClause) {
 		try {
-			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
-				identifier.getPk()
-			}, loginidentifierRowMapper));
+			switch(whereClause) {
+				case BY_IDENTIFIER -> {
+					return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
+						identifier.getText()
+					}, loginidentifierRowMapper));
+				}
+				
+				default -> throw new AuthorizeException(ErrorFactory.NOT_IMPLEMENTED, "");
+			}
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
+		} catch (Exception e) {
+			throw new AuthorizeException(ErrorFactory.DATABASE_EXCEPTION, e.getMessage());
 		}
 	}
 
@@ -195,8 +189,6 @@ public class LoginIdentifierDao implements GenericDao <LoginIdentifier, Identifi
 			loginidentifier.getIdentifier(),
 			loginidentifier.getStartTime(),
 			loginidentifier.getEndTime(),
-			loginidentifier.getRowCreationTime(),
-			loginidentifier.getRowUpdateTime(),
 			loginidentifier.getRowUpdateInfo(),
 			loginidentifier.getLoginIdentifierId());
 		return getV1(new Identifier(loginidentifier.getLoginIdentifierId(), identifier.getLocaleCd()));

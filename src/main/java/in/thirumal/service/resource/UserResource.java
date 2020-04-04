@@ -35,7 +35,7 @@ public class UserResource implements Serializable {
 	private Integer genderCd;
 	private String genderLocale;
 	private OffsetDateTime birthDate;
-	private String loginIdentifierCd;
+	private Integer loginIdentifierCd;
 	private String loginIdentifierLocale;
 	private String loginIdentifier;
 	private String secret;
