@@ -65,7 +65,7 @@ public class UserController extends GenericController {
 		return userService.changePassword(userResource, Identifier.builder().localeCd(getLocaleCd(locale)).build());
 	}
 	
-	@PutMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(value = "/question", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseStatus(value = HttpStatus.OK)
 	public boolean setQuestions(@RequestBody List<LoginQuestion> loginQuestions, @RequestParam(name="recaptcha") String recaptchaResponse, 
 			HttpServletRequest request,	@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") String locale) {
