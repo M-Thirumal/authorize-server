@@ -34,7 +34,7 @@ public class LookUpController extends GenericController{
     @GetMapping(value = "/parent")
   	public List<GenericCd> listCd(@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") String locale) {
   		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
-  		return genericCdDao.list(Identifier.builder().text(locale).build(), GenericCdDao.BY_PARENT_NULL);
+  		return genericCdDao.list(Identifier.builder().localeCd(localeCdDao.getLocaleCd(locale)).build(), GenericCdDao.BY_PARENT_NULL);
   	}
     
     @GetMapping(value = "/locale")

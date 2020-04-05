@@ -26,7 +26,7 @@ public class LocaleCd implements java.io.Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	//Declaring fields
-	private Long localeCd;
+	private int localeCd;
 	private String code;
 	private String description;
 	private LocalDate startDate;
