@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,8 @@ import in.thirumal.service.resource.UserResource;
 public class UserService implements GenericPartyService<UserResource, Identifier> {
 
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private GenericDao<Party, Identifier, String> partyDao;
 	@Autowired
@@ -89,6 +91,12 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 		LoginIdentifier loginIdentifier = loginIdentifierDao.getV1(Identifier.builder().localeCd(3).text(userResource.getLoginIdentifier()).build(), 
 				LoginIdentifierDao.BY_IDENTIFIER).orElseThrow(()->new AuthorizeException(ErrorFactory.BAD_REQUEST, 
 						"The requested user id is available"));
+		List<Password> passwords = passwordDao.list(Identifier.builder().pk(loginIdentifier.getLoginId()).build(), PasswordDao.BY_LAST_3);
+		passwords.forEach(System.out::println);
+		if (passwords.stream().anyMatch(p -> passwordEncoder.matches(userResource.getSecret(), p.getSecret()))) {
+			throw new AuthorizeException(ErrorFactory.RESOURCE_FAILED_VALIDATION, "Password must not match with last 3 password");
+		}
+		//
 		Password password = passwordDao.getV1(Identifier.builder().pk(loginIdentifier.getLoginId()).build(), PasswordDao.BY_LOGIN_ID)
 				.orElseThrow(()->new AuthorizeException(ErrorFactory.BAD_REQUEST, 
 						"The requested user not set the password"));

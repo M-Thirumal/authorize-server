@@ -39,6 +39,7 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	private static final String DELETE_BY = "Password.deleteBy";
 	//
 	public static final String BY_LOGIN_ID = "LoginId";
+	public static final String BY_LAST_3 = "Last3";
 
 	private final JdbcTemplate jdbcTemplate;
 	private Environment environment;
