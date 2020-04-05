@@ -107,7 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 		.requestMatchers(CorsUtils::isPreFlightRequest)
 		.antMatchers("/swagger-ui.html", "/swagger-ui/**", "/webjars/**", "/swagger-resources/**", "/v2/**", "/v3/**", "/api-docs/**")		
-		.antMatchers("/codes/**")
+		.antMatchers("/look-up/**")
 		.antMatchers("/search/individual/service-provider")
 		//.antMatchers("/search/individual/**")
 		.antMatchers("/search/identification", HttpMethod.POST.toString())

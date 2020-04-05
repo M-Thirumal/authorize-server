@@ -43,7 +43,7 @@ public class UserController extends GenericController {
 		//Start of Verify reCaptcha
 	//	verifyCaptcha(recaptchaResponse, request);
 		//End of reCaptcha
-		return new ResponseEntity<>(userService.create(userResource, Identifier.builder().localeCd(3).build(), false), HttpStatus.OK);
+		return new ResponseEntity<>(userService.create(userResource, Identifier.builder().localeCd(3).build()), HttpStatus.OK);
 	}
 	
 }

@@ -23,7 +23,7 @@ import in.thirumal.service.resource.UserResource;
  *
  */
 @Service
-public class UserService implements GenericPartyService<UserResource, Identifier, Boolean> {
+public class UserService implements GenericPartyService<UserResource, Identifier> {
 
 	@Autowired
 	private GenericDao<Party, Identifier, String> partyDao;
@@ -34,7 +34,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	
 	@Transactional
 	@Override
-	public UserResource create(UserResource userResource, Identifier identifier, Boolean isVerified) {
+	public UserResource create(UserResource userResource, Identifier identifier) {
 		validateUserId(userResource);
 		Party party = partyDao.create(Party.builder().birthDate(OffsetDateTime.now()).build(), identifier);
 		//
@@ -60,49 +60,49 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	}
 
 	@Override
-	public UserResource update(UserResource resource, Identifier identifier, Boolean isVerified) {
+	public UserResource update(UserResource resource, Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserResource get(Identifier identifier, Boolean isVerified) {
+	public UserResource get(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserResource getForList(Identifier identifier, Boolean isVerified) {
+	public UserResource getForList(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserResource forList(UserResource t, Identifier identifier, Boolean isVerified) {
+	public UserResource forList(UserResource t, Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<UserResource> list(Identifier identifier, Boolean isVerified) {
+	public List<UserResource> list(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean delete(Identifier identifier, Boolean isVerified) {
+	public boolean delete(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public UserResource activate(Identifier identifier, Boolean isVerified) {
+	public UserResource activate(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserResource inActivate(Identifier identifier, Boolean isVerified) {
+	public UserResource inActivate(Identifier identifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -2,11 +2,14 @@ package in.thirumal.exception;
 
 import java.security.Timestamp;
 
+import lombok.ToString;
+
 /**
  * @author திருமால்
  * @since 15/04/2017
  * @version 1.0
  */
+@ToString
 public class AuthorizeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -60,12 +63,4 @@ public class AuthorizeException extends RuntimeException {
 		this.timestamp = timestamp;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "IndsolvException [errorDefinition=" + errorDefinition + ", timestamp=" + timestamp + "]";
-	}
-	
 }

@@ -10,20 +10,18 @@ package in.thirumal.service;
  * @param <V>
  *
  */
-public interface GenericPartyService<T, I, V> extends GenericService<T, I, V> {
+public interface GenericPartyService<T, I> extends GenericService<T, I> {
 	/**
 	 * Activate the party
 	 * @param identifier
-	 * @param isVerified
 	 * @return T
 	 */
-	T activate(I identifier, V isVerified);
+	T activate(I identifier);
 	/**
 	 * In-activate the party
 	 * @param identifier
-	 * @param isVerified
 	 * @return T
 	 */
-	T inActivate(I identifier, V isVerified);
+	T inActivate(I identifier);
 	
 }
