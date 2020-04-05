@@ -23,7 +23,7 @@ import in.thirumal.service.resource.UserResource;
 import in.thirumal.service.rest.UserService;
 
 /**
- * @author thirumal
+ * @author Thirumal
  *
  */
 @RestController

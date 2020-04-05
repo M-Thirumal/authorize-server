@@ -14,6 +14,7 @@ import in.thirumal.persistence.dao.LoginIdentifierDao;
 import in.thirumal.persistence.model.Login;
 import in.thirumal.persistence.model.LoginIdentifier;
 import in.thirumal.persistence.model.Party;
+import in.thirumal.persistence.model.Password;
 import in.thirumal.persistence.model.shared.Identifier;
 import in.thirumal.service.GenericPartyService;
 import in.thirumal.service.resource.UserResource;
@@ -30,6 +31,8 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	@Autowired
 	private GenericDao<Login, Identifier, String> loginDao;
 	@Autowired
+	private GenericDao<Password, Identifier, String> passwordDao;
+	@Autowired
 	private GenericDao<LoginIdentifier, Identifier, String> loginIdentifierDao;
 	
 	@Transactional
@@ -39,10 +42,14 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 		Party party = partyDao.create(Party.builder().birthDate(OffsetDateTime.now()).build(), identifier);
 		//
 		Login login = loginDao.create(Login.builder().partyId(party.getPartyId()).build(), identifier);
-		
+		//
 		LoginIdentifier loginIdentifier = loginIdentifierDao.create(LoginIdentifier.builder()
 				.loginId(login.getLoginId()).genericCd(userResource.getLoginIdentifierCd()).identifier(userResource.getLoginIdentifier())
 				.startTime(OffsetDateTime.now()).build(), identifier);
+		//
+		passwordDao.create(Password.builder().loginId(login.getLoginId()).secret(userResource.getSecret())
+				.startTime(OffsetDateTime.now()).build(), identifier);
+		
 		return fillResource(party, loginIdentifier);
 	}
 

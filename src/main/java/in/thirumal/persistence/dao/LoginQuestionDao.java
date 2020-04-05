@@ -91,21 +91,6 @@ public class LoginQuestionDao implements GenericDao <LoginQuestion, Identifier, 
 		} else { 
 			ps.setObject(5, loginquestion.getEndTime());
 		}
-		if(loginquestion.getRowCreationTime() == null) {
-			ps.setObject(6, null);
-		} else { 
-			ps.setObject(6, loginquestion.getRowCreationTime());
-		}
-		if(loginquestion.getRowUpdateTime() == null) {
-			ps.setObject(7, null);
-		} else { 
-			ps.setObject(7, loginquestion.getRowUpdateTime());
-		}
-		if(loginquestion.getRowUpdateInfo() == null) {
-			ps.setObject(8, null);
-		} else { 
-			ps.setString(8, loginquestion.getRowUpdateInfo());
-		}
 		return ps;
 	}
 
@@ -195,9 +180,6 @@ public class LoginQuestionDao implements GenericDao <LoginQuestion, Identifier, 
 			loginquestion.getAnswer(),
 			loginquestion.getStartTime(),
 			loginquestion.getEndTime(),
-			loginquestion.getRowCreationTime(),
-			loginquestion.getRowUpdateTime(),
-			loginquestion.getRowUpdateInfo(),
 			loginquestion.getLoginQuestionId());
 		return getV1(new Identifier(loginquestion.getLoginQuestionId(), identifier.getLocaleCd()));
 	}

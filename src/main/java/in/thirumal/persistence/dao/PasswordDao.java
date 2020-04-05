@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import in.thirumal.exception.AuthorizeException;
@@ -39,6 +40,9 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 
 	private final JdbcTemplate jdbcTemplate;
 	private Environment environment;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public PasswordDao(JdbcTemplate jdbcTemplate, Environment environment) {
@@ -72,9 +76,9 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 			ps.setLong(1, password.getLoginId());
 		}
 		if(password.getSecret() == null) {
-			ps.setObject(2, null);
+			throw new AuthorizeException(ErrorFactory.RESOURCE_NOT_FOUND, "Password is mandatory");
 		} else { 
-			ps.setString(2, password.getSecret());
+			ps.setString(2, passwordEncoder.encode(password.getSecret()));
 		}
 		if(password.getStartTime() == null) {
 			ps.setObject(3, null);
@@ -113,7 +117,6 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	public Optional<Password> getV1(Identifier identifier) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty("Password.get"), new Object[] {
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, passwordRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -130,7 +133,6 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	public Optional<Password> getV1(Identifier identifier, String whereClause) {
 		try {
 			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			}, passwordRowMapper));
 		} catch (EmptyResultDataAccessException e) {
@@ -142,7 +144,6 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	public List<Password> list(Identifier identifier) {
 		try {
 			return jdbcTemplate.query(environment.getProperty("Password.list"), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, passwordRowMapper);
 		} catch (Exception e) {
@@ -154,7 +155,6 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	public List<Password> list(Identifier identifier, String whereClause) {
 		try {
 			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
 				identifier.getPk()
 			 }, passwordRowMapper);
 		} catch (Exception e) {
