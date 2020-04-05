@@ -3,6 +3,8 @@ package in.thirumal.service.rest;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import in.thirumal.exception.AuthorizeException;
 import in.thirumal.exception.ErrorFactory;
 import in.thirumal.persistence.GenericDao;
 import in.thirumal.persistence.dao.LoginIdentifierDao;
+import in.thirumal.persistence.dao.PasswordDao;
 import in.thirumal.persistence.model.Login;
 import in.thirumal.persistence.model.LoginIdentifier;
 import in.thirumal.persistence.model.Party;
@@ -27,6 +30,8 @@ import in.thirumal.service.resource.UserResource;
 @Service
 public class UserService implements GenericPartyService<UserResource, Identifier> {
 
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private GenericDao<Party, Identifier, String> partyDao;
 	@Autowired
@@ -41,6 +46,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	@Transactional
 	@Override
 	public UserResource create(UserResource userResource, Identifier identifier) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		validateUserId(userResource);
 		//
 		Party party = partyDao.create(Party.builder().birthDate(userResource.getBirthDate() == null ? OffsetDateTime.now() :
@@ -70,58 +76,74 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	}
 
 	private void validateUserId(UserResource userResource) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		if (loginIdentifierDao.getV1(Identifier.builder().localeCd(3).text(userResource.getLoginIdentifier()).build(), 
 				LoginIdentifierDao.BY_IDENTIFIER).isPresent()) {
 			throw new AuthorizeException(ErrorFactory.BAD_REQUEST, "The requested id is already claimed");
-		}
-		
+		}		
+	}
+	
+	@Transactional
+	public boolean changePassword(UserResource userResource, Identifier identifier) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		LoginIdentifier loginIdentifier = loginIdentifierDao.getV1(Identifier.builder().localeCd(3).text(userResource.getLoginIdentifier()).build(), 
+				LoginIdentifierDao.BY_IDENTIFIER).orElseThrow(()->new AuthorizeException(ErrorFactory.BAD_REQUEST, 
+						"The requested user id is available"));
+		Password password = passwordDao.getV1(Identifier.builder().pk(loginIdentifier.getLoginId()).build(), PasswordDao.BY_LOGIN_ID)
+				.orElseThrow(()->new AuthorizeException(ErrorFactory.BAD_REQUEST, 
+						"The requested user not set the password"));
+		password.setEndTime(OffsetDateTime.now());
+		passwordDao.update(password, identifier);
+		passwordDao.create(Password.builder().loginId(loginIdentifier.getLoginId()).startTime(OffsetDateTime.now())
+				.secret(userResource.getSecret()).build(), identifier);
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public UserResource update(UserResource resource, Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public UserResource get(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public UserResource getForList(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public UserResource forList(UserResource t, Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public List<UserResource> list(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public boolean delete(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return false;
 	}
 
 	@Override
 	public UserResource activate(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 
 	@Override
 	public UserResource inActivate(Identifier identifier) {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		return null;
 	}
 

@@ -9,8 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,15 +35,31 @@ public class UserController extends GenericController {
 
 	@PostMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseEntity<?> create(@Valid @RequestBody UserResource userResource, 
+	public UserResource create(@Valid @RequestBody UserResource userResource, 
 			@RequestParam(name="recaptcha") String recaptchaResponse, HttpServletRequest request,
-			@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") 
-		String locale) {
+			@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") String locale) {
 		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		//Start of Verify reCaptcha
-	//	verifyCaptcha(recaptchaResponse, request);
+		verifyCaptcha(recaptchaResponse, request);
 		//End of reCaptcha
-		return new ResponseEntity<>(userService.create(userResource, Identifier.builder().localeCd(3).build()), HttpStatus.OK);
+		return userService.create(userResource, Identifier.builder().localeCd(getLocaleCd(locale)).build());
+	}
+	
+	private void verifyCaptcha(String recaptchaResponse, HttpServletRequest request) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		logger.debug(recaptchaResponse, request);
+	}
+
+	@PutMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseStatus(value = HttpStatus.OK)
+	public boolean changePassword(@Valid @RequestBody UserResource userResource, 
+			@RequestParam(name="recaptcha") String recaptchaResponse, HttpServletRequest request,
+			@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") String locale) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		//Start of Verify reCaptcha
+		verifyCaptcha(recaptchaResponse, request);
+		//End of reCaptcha
+		return userService.changePassword(userResource, Identifier.builder().localeCd(getLocaleCd(locale)).build());
 	}
 	
 }

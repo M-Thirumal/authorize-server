@@ -37,6 +37,8 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	private static final String GET_BY    = "Password.getBy";
 	private static final String LIST_BY   = "Password.listBy";
 	private static final String DELETE_BY = "Password.deleteBy";
+	//
+	public static final String BY_LOGIN_ID = "LoginId";
 
 	private final JdbcTemplate jdbcTemplate;
 	private Environment environment;
@@ -132,9 +134,11 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	@Override
 	public Optional<Password> getV1(Identifier identifier, String whereClause) {
 		try {
-			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), new Object[] { 
-				identifier.getPk()
-			}, passwordRowMapper));
+			var parameters = switch(whereClause) {
+				case BY_LOGIN_ID -> new Object[] { identifier.getPk() };
+				default -> throw new AuthorizeException(ErrorFactory.NOT_IMPLEMENTED);
+			};
+			return Optional.of(jdbcTemplate.queryForObject(environment.getProperty(GET_BY + whereClause), parameters, passwordRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
@@ -170,11 +174,7 @@ public class PasswordDao implements GenericDao <Password, Identifier, String>  {
 	@Override
 	public Optional<Password> updateV1(Password password, Identifier identifier) {
 		jdbcTemplate.update(environment.getProperty("Password.update"), 
-			password.getLoginId(),
-			password.getSecret(),
-			password.getStartTime(),
-			password.getEndTime(),
-			password.getPasswordId());
+			password.getEndTime(), password.getPasswordId());
 		return getV1(new Identifier(password.getPasswordId(), identifier.getLocaleCd()));
 	}
 

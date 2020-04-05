@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import in.thirumal.exception.AuthorizeException;
 import in.thirumal.exception.ErrorDefinition;
 import in.thirumal.exception.ErrorFactory;
+import in.thirumal.persistence.dao.LocaleCdDao;
 
 /**
  * @author Thirumal
@@ -32,7 +33,8 @@ import in.thirumal.exception.ErrorFactory;
 public class GenericController {
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+	@Autowired
+	protected LocaleCdDao localeCdDao; 
 	@Autowired
 	private ErrorFactory errorFactory;
 	
@@ -65,6 +67,10 @@ public class GenericController {
  		}
  		logger.debug("file: " + file.getContentType());
 		return true;
+	}
+	
+	public int getLocaleCd(String locale) {
+		return localeCdDao.getLocaleCd(locale);
 	}
 	
 }
