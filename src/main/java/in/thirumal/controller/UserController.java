@@ -3,6 +3,8 @@
  */
 package in.thirumal.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.thirumal.persistence.model.LoginQuestion;
 import in.thirumal.persistence.model.shared.Identifier;
 import in.thirumal.service.resource.UserResource;
 import in.thirumal.service.rest.UserService;
@@ -60,6 +63,17 @@ public class UserController extends GenericController {
 		verifyCaptcha(recaptchaResponse, request);
 		//End of reCaptcha
 		return userService.changePassword(userResource, Identifier.builder().localeCd(getLocaleCd(locale)).build());
+	}
+	
+	@PutMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseStatus(value = HttpStatus.OK)
+	public boolean setQuestions(@RequestBody List<LoginQuestion> loginQuestions, @RequestParam(name="recaptcha") String recaptchaResponse, 
+			HttpServletRequest request,	@RequestHeader(value = "User-Accept-Language", defaultValue = "en-IN") String locale) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		//Start of Verify reCaptcha
+		verifyCaptcha(recaptchaResponse, request);
+		//End of reCaptcha
+		return userService.setQuestions(loginQuestions, Identifier.builder().localeCd(getLocaleCd(locale)).build());
 	}
 	
 }

@@ -17,6 +17,7 @@ import in.thirumal.persistence.dao.LoginIdentifierDao;
 import in.thirumal.persistence.dao.PasswordDao;
 import in.thirumal.persistence.model.Login;
 import in.thirumal.persistence.model.LoginIdentifier;
+import in.thirumal.persistence.model.LoginQuestion;
 import in.thirumal.persistence.model.Party;
 import in.thirumal.persistence.model.PartyName;
 import in.thirumal.persistence.model.Password;
@@ -92,7 +93,6 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 				LoginIdentifierDao.BY_IDENTIFIER).orElseThrow(()->new AuthorizeException(ErrorFactory.BAD_REQUEST, 
 						"The requested user id is available"));
 		List<Password> passwords = passwordDao.list(Identifier.builder().pk(loginIdentifier.getLoginId()).build(), PasswordDao.BY_LAST_3);
-		passwords.forEach(System.out::println);
 		if (passwords.stream().anyMatch(p -> passwordEncoder.matches(userResource.getSecret(), p.getSecret()))) {
 			throw new AuthorizeException(ErrorFactory.RESOURCE_FAILED_VALIDATION, "Password must not match with last 3 password");
 		}
@@ -107,6 +107,13 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 		return Boolean.TRUE;
 	}
 
+	@Transactional
+	public boolean setQuestions(List<LoginQuestion> loginQuestions, Identifier identifier) {
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+	
+		return false;
+	}
+	
 	@Override
 	public UserResource update(UserResource resource, Identifier identifier) {
 		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
