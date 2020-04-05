@@ -39,6 +39,7 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 	private static final String DELETE_BY = "GenericCd.deleteBy";
 	//
 	public static final String BY_PARENT_NULL = "ParentNull";
+	public static final String BY_PARENT_CD = "ParentCd";
 
 	private final JdbcTemplate jdbcTemplate;
 	private Environment environment;
@@ -84,35 +85,20 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 		} else { 
 			ps.setObject(3, genericcd.getEndDate());
 		}
-		if(genericcd.getRowCreationTime() == null) {
+		if(genericcd.getRowCreatedBy() == null) {
 			ps.setObject(4, null);
 		} else { 
-			ps.setObject(4, genericcd.getRowCreationTime());
-		}
-		if(genericcd.getRowCreatedBy() == null) {
-			ps.setObject(5, null);
-		} else { 
-			ps.setString(5, genericcd.getRowCreatedBy());
+			ps.setString(4, genericcd.getRowCreatedBy());
 		}
 		if(genericcd.getRowUpdatedBy() == null) {
-			ps.setObject(6, null);
+			ps.setObject(5, genericcd.getRowCreatedBy());
 		} else { 
-			ps.setString(6, genericcd.getRowUpdatedBy());
-		}
-		if(genericcd.getRowUpdateTime() == null) {
-			ps.setObject(7, null);
-		} else { 
-			ps.setObject(7, genericcd.getRowUpdateTime());
-		}
-		if(genericcd.getRowUpdateInfo() == null) {
-			ps.setObject(8, null);
-		} else { 
-			ps.setString(8, genericcd.getRowUpdateInfo());
+			ps.setString(5, genericcd.getRowUpdatedBy());
 		}
 		if(genericcd.getParentGenericCd() == null) {
-			ps.setObject(9, null);
+			ps.setObject(6, null);
 		} else { 
-			ps.setInt(9, genericcd.getParentGenericCd());
+			ps.setInt(6, genericcd.getParentGenericCd());
 		}
 		return ps;
 	}
@@ -181,10 +167,12 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 	@Override
 	public List<GenericCd> list(Identifier identifier, String whereClause) {
 		try {
-			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), new Object[] { 
-				identifier.getLocaleCd(),
-				identifier.getPk()
-			 }, genericcdRowMapper);
+			var parameters = switch(whereClause) {
+				case BY_PARENT_NULL -> new Object[] { identifier.getLocaleCd() };
+				case BY_PARENT_CD -> new Object[] { identifier.getLocaleCd(), identifier.getPk() };
+				default -> throw new AuthorizeException(ErrorFactory.NOT_IMPLEMENTED);
+			};
+			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), parameters, genericcdRowMapper);
 		} catch (Exception e) {
 			throw new AuthorizeException(ErrorFactory.DATABASE_EXCEPTION, e.getMessage());
 		}
@@ -201,9 +189,7 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 			genericcd.getCode(),
 			genericcd.getStartDate(),
 			genericcd.getEndDate(),
-			genericcd.getRowCreationTime(),
 			genericcd.getRowUpdatedBy(),
-			genericcd.getRowUpdateTime(),
 			genericcd.getRowUpdateInfo(),
 			genericcd.getParentGenericCd(),
 			genericcd.getGenericCd());
@@ -236,6 +222,8 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 
 		genericcd.setGenericCd(rs.getObject("generic_cd") != null ? rs.getLong("generic_cd") : null);
 
+		genericcd.setGenericLocale(rs.getObject("generic_locale") != null ? rs.getString("generic_locale") : null);
+		
 		genericcd.setCode(rs.getObject("code") != null ? rs.getString("code") : null);
 
 		genericcd.setStartDate(rs.getObject("start_date") != null ? rs.getObject("start_date", LocalDate.class) : null);
