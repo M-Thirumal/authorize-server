@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import in.thirumal.exception.AuthorizeException;
@@ -50,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 *  Password verification will be done by spring itself
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
 		LoginIdentifier loginUser = loginIdentifierDao.getV1(Identifier.builder().text(username.toLowerCase()).build(), LoginIdentifierDao.BY_IDENTIFIER)
 				.orElseThrow(()->new AuthorizeException(ErrorFactory.UNAUTHORIZED, "User id is not found"));	 //Always lower case

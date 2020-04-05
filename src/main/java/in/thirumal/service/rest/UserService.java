@@ -67,7 +67,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 				.loginId(login.getLoginId()).genericCd(userResource.getLoginIdentifierCd()).identifier(userResource.getLoginIdentifier())
 				.startTime(OffsetDateTime.now()).build(), identifier);
 		//
-		passwordDao.create(Password.builder().loginId(login.getLoginId()).secret(userResource.getSecret())
+		passwordDao.create(Password.builder().loginId(login.getLoginId()).secret(passwordEncoder.encode(userResource.getSecret()))
 				.startTime(OffsetDateTime.now()).build(), identifier);
 		
 		return fillResource(party, loginIdentifier);
@@ -103,7 +103,7 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 		password.setEndTime(OffsetDateTime.now());
 		passwordDao.update(password, identifier);
 		passwordDao.create(Password.builder().loginId(loginIdentifier.getLoginId()).startTime(OffsetDateTime.now())
-				.secret(userResource.getSecret()).build(), identifier);
+				.secret(passwordEncoder.encode(userResource.getSecret())).build(), identifier);
 		return Boolean.TRUE;
 	}
 

@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -41,27 +42,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //	private String signingKey;
 	//private Integer encodingStrength = 256;
 	
-	//private UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
 	private CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
 
 	@Autowired
-	public SecurityConfig(/*UserDetailsService userDetailsService,*/
-			CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint) {
-	//	this.userDetailsService = userDetailsService;
+	public SecurityConfig(UserDetailsService userDetailsService, CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint) {
+		this.userDetailsService = userDetailsService;
 		this.customBasicAuthenticationEntryPoint = customBasicAuthenticationEntryPoint;
 	}
 
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
-//		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//	}
-	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
-        .withUser("thirumal").password("$2a$11$WWZlUCd4XndWGpriAx7Pv.HpZ042awTnlAKr9VDiN9xEdPNS1Xy1q").roles("ADMIN").roles("ACTUATOR");
+		logger.debug(this.getClass().getSimpleName() + ": " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
+	
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
+//        .withUser("thirumal").password("$2a$11$WWZlUCd4XndWGpriAx7Pv.HpZ042awTnlAKr9VDiN9xEdPNS1Xy1q").roles("ADMIN").roles("ACTUATOR");
+//	}
 	
 	//@Order(1)
 	@Override
@@ -138,11 +138,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BasicAuthenticationFilter(authManager, customBasicAuthenticationEntryPoint);
 	}
 	
-	 @Override
-	 @Bean 
-     public AuthenticationManager authenticationManagerBean() throws Exception {
-         return super.authenticationManagerBean();
-     }
+	@Override
+	@Bean 
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 	
     @Bean
     SessionRegistry sessionRegistry() {			
