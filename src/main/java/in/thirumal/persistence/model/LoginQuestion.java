@@ -1,12 +1,10 @@
 package in.thirumal.persistence.model;
 
-import java.lang.Integer;
 import java.time.OffsetDateTime;
-import java.lang.Long;
-import java.lang.String;
+
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +27,7 @@ public class LoginQuestion implements java.io.Serializable  {
 	//Declaring fields
 	private Long loginQuestionId;
 	private Long loginId;
-	private Integer genericCd;
+	private long genericCd;
 	private String genericLocale;
 	private String answer;
 	private OffsetDateTime startTime;

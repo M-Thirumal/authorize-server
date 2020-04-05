@@ -138,7 +138,6 @@ public class LocaleCdDao implements GenericDao <LocaleCd, Identifier, String>  {
 		}
 	}
 
-	@Cacheable(value = "locale")
 	@Override
 	public List<LocaleCd> list(Identifier identifier) {
 		try {
@@ -148,7 +147,7 @@ public class LocaleCdDao implements GenericDao <LocaleCd, Identifier, String>  {
 		}
 	}
 	
-	@Cacheable(value = "locale-value", key = "#locale")
+	@Cacheable(value = "locale", key = "#locale")
 	public int getLocaleCd(String locale) {
 		LocaleCd localeCd = list(Identifier.builder().build()).stream().filter(l->l.getCode().equalsIgnoreCase(locale.replace("-", "_")))
 				.findFirst().orElseThrow(() -> new AuthorizeException(ErrorFactory.RESOURCE_NOT_FOUND, "The Locale is not available in the database"));

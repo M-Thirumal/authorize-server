@@ -95,11 +95,7 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 		} else { 
 			ps.setString(5, genericcd.getRowUpdatedBy());
 		}
-		if(genericcd.getParentGenericCd() == null) {
-			ps.setObject(6, null);
-		} else { 
-			ps.setInt(6, genericcd.getParentGenericCd());
-		}
+		ps.setLong(6, genericcd.getParentGenericCd());
 		return ps;
 	}
 
@@ -174,6 +170,7 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 			};
 			return jdbcTemplate.query(environment.getProperty(LIST_BY + whereClause), parameters, genericcdRowMapper);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new AuthorizeException(ErrorFactory.DATABASE_EXCEPTION, e.getMessage());
 		}
 	}
@@ -240,7 +237,7 @@ public class GenericCdDao implements GenericDao <GenericCd, Identifier, String> 
 
 		genericcd.setRowUpdateInfo(rs.getObject("row_update_info") != null ? rs.getString("row_update_info") : null);
 
-		genericcd.setParentGenericCd(rs.getObject("parent_generic_cd") != null ? rs.getInt("parent_generic_cd") : null);
+		genericcd.setParentGenericCd(rs.getObject("parent_generic_cd") != null ? rs.getLong("parent_generic_cd") : 0);
 
 		genericcd.setParentGenericLocale(rs.getObject("parent_generic_locale") != null ? rs.getString("parent_generic_locale") : null);
 

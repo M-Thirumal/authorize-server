@@ -27,7 +27,7 @@ public class PartyName implements java.io.Serializable  {
 	//Declaring fields
 	private Long partyNameId;
 	private Long partyId;
-	private Integer genericCd;
+	private long genericCd;
 	private String genericLocale;
 	private String firstName;
 	private String restOfName;
@@ -40,5 +40,8 @@ public class PartyName implements java.io.Serializable  {
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
 
+	//Constants
+	public static final long DEFAULT_NAME_TYPE_CD = 2000;
+	
 	//TODO hashcode & equals method
 }

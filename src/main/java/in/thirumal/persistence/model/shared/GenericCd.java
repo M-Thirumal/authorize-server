@@ -26,9 +26,9 @@ public class GenericCd implements java.io.Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	//Declaring fields
-	private Long genericCd;
+	private long genericCd;
 	private String genericLocale;
-	private Integer localeCd;
+	private int localeCd;
 	private String code;
 	private String description;
 	private LocalDate startDate;
@@ -43,7 +43,7 @@ public class GenericCd implements java.io.Serializable  {
 	@EqualsAndHashCode.Exclude
 	private OffsetDateTime rowUpdateTime;
 	private String rowUpdateInfo;
-	private Integer parentGenericCd;
+	private long parentGenericCd;
 	private String parentGenericLocale;
 
 	//TODO hashcode & equals method

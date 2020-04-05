@@ -32,10 +32,10 @@ public class UserResource implements Serializable {
 	private UUID partyUuid;
 	private String firstName;
 	private String lastName;
-	private Integer genderCd;
+	private long genderCd;
 	private String genderLocale;
 	private OffsetDateTime birthDate;
-	private Integer loginIdentifierCd;
+	private long loginIdentifierCd;
 	private String loginIdentifierLocale;
 	private String loginIdentifier;
 	private String secret;

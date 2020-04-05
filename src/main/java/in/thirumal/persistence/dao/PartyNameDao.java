@@ -71,11 +71,7 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 		} else { 
 			ps.setLong(1, partyname.getPartyId());
 		}
-		if(partyname.getGenericCd() == null) {
-			ps.setObject(2, null);
-		} else { 
-			ps.setInt(2, partyname.getGenericCd());
-		}
+		ps.setLong(2, partyname.getGenericCd());
 		if(partyname.getFirstName() == null) {
 			ps.setObject(3, null);
 		} else { 
@@ -97,21 +93,6 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 			ps.setObject(6, partyname.getEndTime());
 		}
 		ps.setBoolean(7, partyname.isPreferred());
-		if(partyname.getRowCreationTime() == null) {
-			ps.setObject(8, null);
-		} else { 
-			ps.setObject(8, partyname.getRowCreationTime());
-		}
-		if(partyname.getRowUpdateTime() == null) {
-			ps.setObject(9, null);
-		} else { 
-			ps.setObject(9, partyname.getRowUpdateTime());
-		}
-		if(partyname.getRowUpdateInfo() == null) {
-			ps.setObject(10, null);
-		} else { 
-			ps.setString(10, partyname.getRowUpdateInfo());
-		}
 		return ps;
 	}
 
@@ -203,8 +184,6 @@ public class PartyNameDao implements GenericDao <PartyName, Identifier, String> 
 			partyname.getStartTime(),
 			partyname.getEndTime(),
 			partyname.isPreferred(),
-			partyname.getRowCreationTime(),
-			partyname.getRowUpdateTime(),
 			partyname.getRowUpdateInfo(),
 			partyname.getPartyNameId());
 		return getV1(new Identifier(partyname.getPartyNameId(), identifier.getLocaleCd()));

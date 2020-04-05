@@ -14,6 +14,7 @@ import in.thirumal.persistence.dao.LoginIdentifierDao;
 import in.thirumal.persistence.model.Login;
 import in.thirumal.persistence.model.LoginIdentifier;
 import in.thirumal.persistence.model.Party;
+import in.thirumal.persistence.model.PartyName;
 import in.thirumal.persistence.model.Password;
 import in.thirumal.persistence.model.shared.Identifier;
 import in.thirumal.service.GenericPartyService;
@@ -29,6 +30,8 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	@Autowired
 	private GenericDao<Party, Identifier, String> partyDao;
 	@Autowired
+	private GenericDao<PartyName, Identifier, String> partyNameDao;
+	@Autowired
 	private GenericDao<Login, Identifier, String> loginDao;
 	@Autowired
 	private GenericDao<Password, Identifier, String> passwordDao;
@@ -39,7 +42,15 @@ public class UserService implements GenericPartyService<UserResource, Identifier
 	@Override
 	public UserResource create(UserResource userResource, Identifier identifier) {
 		validateUserId(userResource);
-		Party party = partyDao.create(Party.builder().birthDate(OffsetDateTime.now()).build(), identifier);
+		//
+		Party party = partyDao.create(Party.builder().birthDate(userResource.getBirthDate() == null ? OffsetDateTime.now() :
+			userResource.getBirthDate()).build(), identifier);
+		//
+		if (userResource.getFirstName() != null || userResource.getLastName() != null) {
+			partyNameDao.create(PartyName.builder().partyId(party.getPartyId()).firstName(userResource.getFirstName())
+				.restOfName(userResource.getLastName()).preferred(true).genericCd(PartyName.DEFAULT_NAME_TYPE_CD)
+				.startTime(party.getBirthDate()).build(), identifier);
+		}
 		//
 		Login login = loginDao.create(Login.builder().partyId(party.getPartyId()).build(), identifier);
 		//
