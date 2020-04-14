@@ -7,9 +7,13 @@
 
 	<persistence directory="spring-boot-ehcache/cache" /> 	
     
-     <cache alias="locale">
-         <expiry>
-            <ttl unit="seconds">30000</ttl>
+     <cache alias="locale" uses-template="config-cache"/>
+     <cache alias="listCd" uses-template="config-cache"/>
+     <cache alias="listParentCd" uses-template="config-cache"/>     
+     
+     <cache-template name="config-cache">
+		<expiry>
+            <ttl unit="seconds">86400</ttl>
         </expiry>
         <listeners>
             <listener>
@@ -17,15 +21,17 @@
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>UPDATED</events-to-fire-on>
                 <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+                <events-to-fire-on>EVICTED</events-to-fire-on>
             </listener>
         </listeners>
         <resources>
-            <heap unit="entries">1000</heap>
+            <heap unit="entries">100000</heap>
             <offheap unit="MB">10</offheap>
-            <disk persistent="true" unit="MB">20</disk>
+            <disk persistent="true" unit="MB">100</disk>
         </resources>
-    </cache>
- 
+    </cache-template>
 
 </config>
