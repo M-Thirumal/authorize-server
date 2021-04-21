@@ -2,9 +2,9 @@
 
 #### What is Authentication and Authorization?
 
-Authentication - "Who you are?", is the process of ascertaining that somebody really is who they claim to be.
+`Authentication` - "Who you are?", is the process of ascertaining that somebody really is who they claim to be.
 
-Authorization refers to rules that determine who is allowed to do what. E.g. Thirumal may be authorized to create and delete databases, while Jesicca is only authorized to read.
+`Authorization` refers to rules that determine who is allowed to do what. E.g. Thirumal may be authorized to create and delete databases, while Jesicca is only authorized to read.
 
 
 #### There are many ways of authentication, few of which are worth discussing here:
